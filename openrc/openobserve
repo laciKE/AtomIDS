@@ -1,0 +1,18 @@
+#!/sbin/openrc-run
+
+description="OpenObserve logs, metrics, traces monitoring"
+export ZO_DATA_DIR=/var/lib/openobserve/
+export ZO_TELEMETRY=false
+export ZO_FEATURE_FULLTEXT_ON_ALL_FIELDS=true
+export ZO_INGEST_ALLOWED_UPTO=24
+command="/usr/local/bin/openobserve"
+command_background=yes
+command_user=openobserve:openobserve
+pidfile="/run/$RC_SVCNAME.pid"
+output_log="/var/log/openobserve.log"
+error_log="/var/log/openobserve.log"
+
+depend() {
+	need net
+	after firewall
+}

@@ -1,0 +1,45 @@
+#!/sbin/openrc-run
+
+description="TZSP capture → tcpreplay to tzsp0 interface"
+
+command="/bin/sh"
+command_args="-c '/usr/local/bin/tzsp2pcap -f | /usr/bin/tcpreplay-edit --quiet --suppress-warnings --no-flow-stats --topspeed --mtu=$(cat /sys/class/net/tzsp0/mtu) -i tzsp0 -'"
+command_background="yes"
+command_user="root:root"
+pidfile="/run/tzsp-replay.pid"
+
+# Optional but recommended: auto-restart on crash
+supervisor="supervise-daemon"
+# respawn_delay=5           # uncomment if you want delay before restart
+
+depend() {
+    need net
+    after firewall
+}
+
+start_pre() {
+    # Make sure the tzsp0 interface exists
+    if [ ! -d /sys/class/net/tzsp0 ]; then
+        eerror "Interface tzsp0 does not exist"
+        return 1
+    fi
+
+    # Optional: check binaries exist
+    if [ ! -x /usr/local/bin/tzsp2pcap ] || [ ! -x /usr/bin/tcpreplay-edit ]; then
+        eerror "Required binaries missing or not executable"
+        return 1
+    fi
+
+    return 0
+}
+
+stop() {
+    ebegin "Stopping tzsp-replay pipeline"
+    pkill -TERM -f "tzsp2pcap -f" 2>/dev/null
+    pkill -TERM -f "tcpreplay-edit.*--mtu=" 2>/dev/null
+    # Give them a moment to exit gracefully
+    sleep 1
+    pkill -KILL -f "tzsp2pcap -f" 2>/dev/null
+    pkill -KILL -f "tcpreplay-edit.*--mtu=" 2>/dev/null
+    eend 0
+}
