@@ -277,5 +277,5 @@ You can test if it is working by generating some alerts in you network, for exam
 curl -s http://testmynids.org/uid/index.html
 ```
 
-![Discord Alert Test](./img/Discord-Alert-Test.png)
+![Discord Alert Test](./img/Discord-Alert.png)
 
