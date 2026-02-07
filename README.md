@@ -25,7 +25,9 @@ Couple of recommended examples:
 
 My personal favourite device with the best value for money is second-hand Mikrotik hAP ac^2. Couple of years ago, this device was distributed by our local telecomunication company to their customers as a device for home fixed LTE Internet conenction. They used their custom firmware based on MikroTik Router OS and now are available for approximately 20-30 Euro on local markets. And they can be re-flashed with the official vanilla RouterOS using the [Netinstall mode](https://help.mikrotik.com/docs/spaces/ROS/pages/24805390/Netinstall).
 
-My another favourite device, especially in connection with Dell Wyse 3040, is TP Link TL-SG105E. Those two devices have almost similar form factor and can be stacked one on the another device. With simple 3D-printed holder, they can be mounted under the desk.
+My another favourite device, especially in connection with Dell Wyse 3040, is TP Link TL-SG105E. Those two devices have almost similar form factor and can be stacked one on the another device. With simple 3D-printed holder, they can be mounted under the desk. The design files for printing holder are available in directory [3D-case](https://github.com/laciKE/AtomIDS/tree/main/3D-case).
+
+![Dell Wyse 3040 and TP Link TL-SG105E](./img/AtomIDS-Desktop.jpg)
 
 ### Forwarding Network Traffic to IDS
 
@@ -46,7 +48,8 @@ SWAP_SIZE=0 setup-alpine
 ```
 
 ### Post-Install Setup
-*(Optional)*If you like the color prompt, it is possible to do system-wide by enable color prompt in `/etc/profile.d`:
+
+*(Optional)* If you like the color prompt, it is possible to do system-wide by enable color prompt in `/etc/profile.d`:
 
 ```
 mv /etc/profile.d/color_prompt.sh.disabled /etc/profile.d/color_prompt.sh
@@ -260,8 +263,11 @@ First, configure alert template via Management (top right corner) -> Templates. 
     "avatar_url": "https://suricata.io/wp-content/uploads/2021/01/cropped-favicon.png"
 }
 ```
+![OpenObserve Alert Template](./img/OpenObserve-Alert-Template.png)
 
 Then, configure destination via Management -> Alert Destinations. Create a new web hook destination, choose the Discord template created in previous step. Grab the URL from [Discord Webhooks integration](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks) and select the 'POST' method in OpenObserve Alert Destination. Also, add `Content-Type` header with value `application/json` and the Alert Destination is ready.
+
+![OpenObserve Alert Destination](./img/OpenObserve-Alert-Destination.png)
 
 Last, setup new OpenObserve alert via Alerts (left navigation menu). Stream Type should be `logs` and Stream Name should be `suricata_alert`. On the next screen, you can filter which alerts you want to receive as notifications. For example, in Conditions, use `if alert_severity <= 2` to select only the alerts with higher severity. Next, in Alert Settings screen, select previously defined Discord destination and you are done.
 
@@ -270,3 +276,6 @@ You can test if it is working by generating some alerts in you network, for exam
 ```
 curl -s http://testmynids.org/uid/index.html
 ```
+
+![Discord Alert Test](./img/Discord-Alert-Test.png)
+
