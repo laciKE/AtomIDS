@@ -229,8 +229,7 @@ tar -xzf openobserve.tar.gz
 rm openobserve.tar.gz
 chown root:root openobserve
 mv openobserve /usr/local/bin/openobserve
-su openobserve -s /bin/ash -c 'ZO_DATA_DIR=/var/lib/openobserve/ ZO_TELEMETRY=false ZO_ROOT_USER_EMAIL="root@home.arpa" ZO_ROOT_USER_
-PASSWORD="Complexpass#123" openobserve'
+su openobserve -s /bin/ash -c 'ZO_DATA_DIR=/var/lib/openobserve/ ZO_TELEMETRY=false ZO_ROOT_USER_EMAIL="root@home.arpa" ZO_ROOT_USER_PASSWORD="Complexpass#123" openobserve'
 ```
 
 ### OpenObserve as a service
